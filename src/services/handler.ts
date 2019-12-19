@@ -1,9 +1,12 @@
-import { GithubService } from './github';
+import { GithubIssuesService } from './github/issues';
+import { GithubCommentsService } from './github/comments';
 
 export let ServicesFactory: ServicesFactory = {
-    GithubService: new GithubService()
+    Issues: new GithubIssuesService(),
+    Comments: new GithubCommentsService()
 };
 
 interface ServicesFactory {
-    GithubService: GithubService
+    Issues: GithubIssuesService,
+    Comments: GithubCommentsService,
 }

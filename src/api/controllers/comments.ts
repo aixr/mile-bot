@@ -1,24 +1,23 @@
 import { Router, NextFunction, Response, Request } from 'express';
-import { GithubIssuesService } from '../../services/github/issues';
+import { GithubCommentsService } from 'src/services/github/comments';
 
-export class IssuesController {
+export class CommentsController {
     Router = Router();
 
-    constructor(private issues: GithubIssuesService) { 
+    constructor(private comments: GithubCommentsService) { 
         this.build() 
     }
 
     private build() {
-        this.Router.get('', this.get);
-        this.Router.get('/:issue_number', this.getSingle);
-        this.Router.post('', this.create);
-        this.Router.patch('/:issue_number', this.edit);
-        this.Router.put('/:issue_number/lock', this.lock);
-        this.Router.delete('/:issue_number', this.unlock);
+        this.Router.get('/:issue_number', this.get);
+        this.Router.get('/s/:comment_id', this.getSingle);
+        this.Router.post('/:issue_number', this.create);
+        this.Router.patch('/:comment_id', this.edit);
+        this.Router.delete('/:comment_id', this.delete);
     }
 
     get = (req: Request, res: Response, next: NextFunction) => {
-        this.issues.get(res.locals.context, req.query)
+        this.comments.get(res.locals.context, req.params.issue_number, req.query)
             .then((result) => {
                 return res.status(result.status).json(result);
             })
@@ -26,7 +25,7 @@ export class IssuesController {
     }
 
     getSingle = (req: Request, res: Response, next: NextFunction) => {
-        this.issues.getSingle(res.locals.context, req.params.issue_number)
+        this.comments.getSingle(res.locals.context, req.params.comment_id)
             .then((result) => {
                 return res.status(result.status).json(result);
             })
@@ -34,7 +33,7 @@ export class IssuesController {
     }
 
     create = (req: Request, res: Response, next: NextFunction) => {
-        this.issues.create(res.locals.context, req.body)
+        this.comments.create(res.locals.context, req.params.issue_number, req.body)
             .then((result) => {
                 return res.status(result.status).json(result);
             })
@@ -42,23 +41,15 @@ export class IssuesController {
     }
 
     edit = (req: Request, res: Response, next: NextFunction) => {
-        this.issues.edit(res.locals.context, req.params.issue_number, req.body)
+        this.comments.edit(res.locals.context, req.params.comment_id, req.body)
             .then((result) => {
                 return res.status(result.status).json(result);
             })
             .catch(console.error);
     }
 
-    lock = (req: Request, res: Response, next: NextFunction) => {
-        this.issues.lock(res.locals.context, req.params.issue_number, req.body)
-            .then((result) => {
-                return res.status(result.status).json(result);
-            })
-            .catch(console.error);
-    }
-
-    unlock = (req: Request, res: Response, next: NextFunction) => {
-        this.issues.unlock(res.locals.context, req.params.issue_number)
+    delete = (req: Request, res: Response, next: NextFunction) => {
+        this.comments.delete(res.locals.context, req.params.comment_id)
             .then((result) => {
                 return res.status(result.status).json(result);
             })

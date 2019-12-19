@@ -1,14 +1,24 @@
 export let config = {
-    // github app id
+    /**
+     * @name id
+     * @description ApplicationID provided by github
+    */
     id: '',
 
-    // name of app
+    /**
+     * @name name
+     * @description name of your application 
+     * is used as User-Agent header when making requests to github
+     */
     name: '',
 
-    // clients - 
-        // id - unique identifier of client, requests will require this to be sent up as a header 'Client': '<id>' to authenticate
-        // installation - the installation this client reresents
-        // repo - name of the repo this client will be using
+    /**
+     * @name clients
+     * @description array of verified clients
+     * @var id identifier of client, should be sent up as a 'client' header when making requests
+     * @var installation the github installation id this client will be using
+     * @var repo the repo i.e. 'aixr/mile-bot'
+     */
     clients: [
         {
             id: '',
@@ -17,9 +27,15 @@ export let config = {
         }
     ],
 
-    // this api url
+    /**
+     * @name url
+     * @description this applications url
+     */
     url: '',
 
-    // applications private key
+    /**
+     * @name key
+     * @description private key for your github application
+    */
     key: ''
 }

@@ -1,7 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { config } from '../../config';
 
-export function authenticate(req: Request, res: Response, next: NextFunction) {
+/**
+ * @name context
+ * @description 
+ * provides context to the request using the 'client' 
+ * header and matching it against clients setup in the config file.
+*/
+export function context(req: Request, res: Response, next: NextFunction) {
 
     if (!req.headers.client) {
         res.status(401).json('Unauthorized - no client header provided');

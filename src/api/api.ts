@@ -7,7 +7,7 @@ import { IssuesController } from './controllers';
 
 import { GithubService } from '../services/github';
 
-import { authenticate } from './middleware/authenticate';
+import { context } from './middleware/context';
 
 export class API {
 
@@ -29,10 +29,11 @@ export class API {
 
     private buildApi() {
         this._issuesController = new IssuesController(this.githubService);
+
         this.api.set('port', this.port);
         this.api.use(express.json());
         this.api.use(express.urlencoded({ extended: false }));
-        this.api.use(authenticate);
+        this.api.use(context);
         this.api.use('/', this._issuesController.Router);
     }
 }
